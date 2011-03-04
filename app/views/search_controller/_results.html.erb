@@ -1,5 +1,5 @@
 <% @json.each do |data| -%>
-  Name: <b><%= data['name'] %></b> is a <b><%= data['category'] %></b><br />
+  Name: <strong><%= data['name'] %></strong> is a <strong><%= data['category'].downcase %></strong><br />
   <%= link_to 'Select this page', show_path(:id => data['id']) %><br />
   <hr />
 <% end -%>
