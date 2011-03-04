@@ -1,0 +1,15 @@
+<% @json.each do |data| -%>
+  Name: <b><%= data['name'] %></b> is a <b><%= data['category'] %></b><br />
+  <%= link_to 'Select this page', show_path(:id => data['id']) %><br />
+  <hr />
+<% end -%>
+
+<% if @search[:page] > 1 %>
+  <%= link_to('Prev.', search_path(:q => params[:q], :page => params[:page] - 1)) %>
+<% end -%>
+
+Page <%= @search[:page] %>
+
+<% if @search[:more] %>
+  <%= link_to 'Next', search_path(:q => params[:q], :page => @search[:page] + 1) %>
+<% end -%>

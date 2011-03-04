@@ -1,0 +1,6 @@
+<% title 'Home' %>
+
+<%= form(search_path) do %>
+  <%= text_field_tag :q, params[:q] %><br />
+  <%= submit_tag 'Search' %>
+<% end -%>
