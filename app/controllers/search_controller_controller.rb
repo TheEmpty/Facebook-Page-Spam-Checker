@@ -1,3 +1,4 @@
+# TODO: rename this to search_controller.rb
 require 'open-uri'
 
 class SearchControllerController < ApplicationController
@@ -5,10 +6,43 @@ class SearchControllerController < ApplicationController
   end
   
   def show
-	  # TODO: SearchController.show
-    @json = ActiveSupport::JSON.decode(open("http://graph.facebook.com/#{params[:id]}/feed").read)['data']
-    @page = ActiveSupport::JSON.decode(open("http://graph.facebook.com/#{params[:id]}").read)
+    # TODO: save the data in database and load it only once a week - also then provide a link to show progress from week to week
+    limit = 1000000
+	  @json = ActiveSupport::JSON.decode(open("http://graph.facebook.com/#{params[:id]}/posts?limit=#{limit}").read)
+	  @page = ActiveSupport::JSON.decode(open("http://graph.facebook.com/#{params[:id]}").read)
     @page['linked_name'] = "<a href='#{@page['link']}' target='_blank' title='#{@page['name']}'>#{@page['name']}</a>"
+    
+    @post_count = @json['data'].count
+    # we +2 here because the pagination is included in the limit
+    flash[:notice] = "This pages has posted over #{limit}, our report may not be accurate" if (@post_count+2) >= limit
+    
+    # likes of all posts
+    @post_likes = 0
+    first_post_time  = false
+    @json['data'].each do |post|
+      @post_likes += post['likes']['count'] if post['likes']
+      first_post_time  = post['created_time']
+    end
+    
+    # average posts
+    if first_post_time
+      first_post_time = Time.parse(first_post_time)
+      @days = Time.now - first_post_time
+      @days = @days / (24 * 60 * 60)
+      logger.debug "Days: #{@days}"
+      @average_posts = @post_count / @days
+    else
+      @average_posts = false
+    end
+    logger.debug @average_posts
+    
+    # average likes
+    if @post_count > 0 and @post_likes > 0
+      @average_likes = @post_likes / @post_count
+    else
+      @average_likes = false
+    end
+    
   end
 
   def search
@@ -24,8 +58,9 @@ class SearchControllerController < ApplicationController
 	  @search[:limit]  = 25
 	  @search[:offset] = (@search[:page]-1) * @search[:limit]
 	
+    query = URI.escape(params[:q], Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
     # JSON.decode(open(url).read)['data']
-    @json = ActiveSupport::JSON.decode(open("http://graph.facebook.com/search?q=#{params[:q]}&type=page&limit=#{@search[:limit]+1}&offset=#{@search[:offset]}").read)['data']
+    @json = ActiveSupport::JSON.decode(open("http://graph.facebook.com/search?q=#{query}&type=page&limit=#{@search[:limit]+1}&offset=#{@search[:offset]}").read)['data']
 	  # in the query above, we pull 26 results, however we are only going to show 25.
 	  # but if there is a 26th, then we know there is a next page.
 	  if @json.length == (@search[:limit] + 1)
