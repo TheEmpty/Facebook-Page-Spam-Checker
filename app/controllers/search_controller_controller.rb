@@ -1,7 +1,7 @@
 # TODO: rename this to search_controller.rb
 require 'open-uri'
 
-class SearchControllerController < ApplicationController
+class SearchController < ApplicationController
   def index
   end
   
