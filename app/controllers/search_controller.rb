@@ -16,11 +16,13 @@ class SearchController < ApplicationController
     # we +2 here because the pagination is included in the limit
     flash[:notice] = "This pages has posted over #{limit}, our report may not be accurate" if (@post_count+2) >= limit
     
-    # likes of all posts
-    @post_likes = 0
+    # likes and comments of all posts
+    @post_likes    = 0
+    @post_comments = 0
     first_post_time  = false
     @json['data'].each do |post|
       @post_likes += post['likes']['count'] if post['likes']
+      @post_comments += post['comments']['count'] if post['comments']
       first_post_time  = post['created_time']
     end
     
@@ -38,10 +40,16 @@ class SearchController < ApplicationController
     
     # average likes
     if @post_count > 0 and @post_likes > 0
-      @average_likes = @post_likes / @post_count
+      @average_likes = @post_count / @post_likes
     else
       @average_likes = false
     end
+    
+    # average comments
+    if @post_comments > 0
+      @average_comments = @post_count / @post_comments
+    end
+    @average_interactions = @average_comments + @average_likes
     
   end
 

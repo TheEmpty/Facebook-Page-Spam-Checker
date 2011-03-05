@@ -5,7 +5,8 @@
 
 <%= raw @page['linked_name'] %> has posted <strong><%= number_with_delimiter @post_count %></strong> items (avg rounded: <% if @average_posts %><strong><%= number_with_delimiter @average_posts.round %></strong> over <%= number_with_delimiter @days.round %> days.<% else %>N/A<% end %></strong> per day.)<br />
 
-<%= raw @page['linked_name'] %> posts have been liked <strong><%= number_with_delimiter @post_likes %></strong> times (avg rounded: <% if @average_likes %><strong><%= number_with_delimiter @average_likes.round %></strong><% else %>N/A<% end %></strong> per post.)<br />
+<%= raw @page['linked_name'] %>'s posts have been liked <strong><%= number_with_delimiter @post_likes %></strong> times (avg rounded: <% if @average_likes %><strong><%= number_with_delimiter @average_likes.round %></strong><% else %>N/A<% end %></strong> per post.)<br />
+<%= raw @page['linked_name'] %>'s posts have been commented on <strong><%= number_with_delimiter @post_comments %></strong> times (avg rounded: <% if @average_comments %><strong><%= number_with_delimiter @average_comments.round %></strong><% else %>N/A<% end %></strong> per post.)<br />
 
 
 Our Vatican assassin warlock has rated this page as <strong>
@@ -19,9 +20,9 @@ Our Vatican assassin warlock has rated this page as <strong>
 </strong> spammy. (based off of the post:day ratio)<br />
 
 This is a <strong>
-<% if @average_likes >= 500 -%>
+<% if @average_interactions >= 500 -%>
   <span style='color: green'>WINNING</span>
 <% else -%>
   <span style='color: red;'>LOSING</span>
 <% end -%>
-</strong> page. (based off of the post:like ratio)
+</strong> page. (based off of the post:like&comments ratio)
