@@ -1,4 +1,3 @@
-# TODO: rename this to search_controller.rb
 require 'open-uri'
 
 class SearchController < ApplicationController
