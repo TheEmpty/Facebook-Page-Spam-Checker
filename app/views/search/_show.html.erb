@@ -8,7 +8,9 @@
 
 
 Our Vatican assassin warlock has rated this page as <strong>
-<% if @average_posts > 1 -%>
+<% if @average_posts == nil -%>
+  N/A
+<% elsif @average_posts > 1 -%>
   <span style='color: red;'>VERY</span>
 <% elsif @average_posts >= 1/7 #(one seventh a day is one a week) -%>
   <span style='color: orange;'>SORT OF</span>
@@ -18,7 +20,9 @@ Our Vatican assassin warlock has rated this page as <strong>
 </strong> spammy. (based off of the post:day ratio)<br />
 
 This is a <strong>
-<% if @average_interactions >= 500 -%>
+<% if @average_interactions == nil -%>
+  N/A
+<% elsif @average_interactions >= 525 -%>
   <span style='color: green'>WINNING</span>
 <% else -%>
   <span style='color: red;'>LOSING</span>

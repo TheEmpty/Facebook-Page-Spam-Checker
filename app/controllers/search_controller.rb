@@ -8,17 +8,17 @@ class SearchController < ApplicationController
     # TODO: save the data in database and load it only once a week - also then provide a link to show progress from week to week
     # TODO: clean up the variables and code where available
     
-    limit = 1000000
+    limit = 1000 # due note that Facebook might say 1,000 is too much and return their max. Point is, we want as much as we can get.
 	  @json = ActiveSupport::JSON.decode(open("http://graph.facebook.com/#{params[:id]}/posts?limit=#{limit}").read)
 	  @page = ActiveSupport::JSON.decode(open("http://graph.facebook.com/#{params[:id]}").read)
     @page['linked_name'] = "<a href='#{@page['link']}' target='_blank' title='#{@page['name']}'>#{@page['name']}</a>"
     
-    # TODO: perhaps check pagination?
+    # TODO: check pagination
+    # @json['paging']['previous'] check that it's ['data'] is blank
+    # should have a max of 5 pages, then flash a notice. Facebook will only allow so many chained hits
     
     @post_count = @json['data'].count
     post_count  = @post_count.to_f # only convert it once to save proccesing power, used in division to provide more accurate numbers
-    # we +2 here because the pagination is included in the limit
-    flash[:notice] = "This pages has posted over #{limit}, our report may not be accurate" if (@post_count+2) >= limit
     
     # likes and comments of all posts
     @post_likes    = 0
@@ -37,23 +37,23 @@ class SearchController < ApplicationController
       @days = @days / (24 * 60 * 60)
       logger.debug "Days: #{@days}"
       @average_posts = post_count / @days
-    else
-      @average_posts = false
     end
-    logger.debug @average_posts
     
     # average likes
     if @post_count > 0 and @post_likes > 0
       @average_likes = @post_likes / post_count
-    else
-      @average_likes = false
     end
     
     # average comments
     if @post_comments > 0
       @average_comments = @post_comments / post_count
     end
-    @average_interactions = @average_comments + @average_likes
+    
+    if @average_comments or @average_likes
+      @average_interactions = 0
+      @average_interactions += @average_comments if @average_comments
+      @average_interactions += @average_likes    if @average_likes
+    end
     
     respond_to do |format|
       format.html
