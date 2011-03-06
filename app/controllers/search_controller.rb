@@ -50,6 +50,11 @@ class SearchController < ApplicationController
     end
     @average_interactions = @average_comments + @average_likes
     
+    respond_to do |format|
+      format.html
+      format.js
+    end
+    
   end
 
   def search

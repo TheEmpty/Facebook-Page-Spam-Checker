@@ -1,6 +1,6 @@
 <% @json.each do |data| -%>
   Name: <strong><%= data['name'] %></strong> is in the <strong><%= data['category'].downcase %></strong> category<br />
-  <%= link_to 'Spam stats for this page', show_path(:id => data['id']) %><br />
+  <%= link_to 'Spam stats for this page', show_path(:id => data['id']), :remote => true %><br />
   <hr />
 <% end -%>
 
