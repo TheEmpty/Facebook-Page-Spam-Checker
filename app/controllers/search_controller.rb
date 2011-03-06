@@ -5,12 +5,16 @@ class SearchController < ApplicationController
   end
   
   def show
+    @page = ActiveSupport::JSON.decode(open("http://graph.facebook.com/#{params[:id]}").read)
+    if @page['likes'] == nil
+      render :text => 'You have entered an invald page ID. Please confirm the page ID and try again.', :layout => true and return
+    end
+    
     # TODO: save the data in database and load it only once a week - also then provide a link to show progress from week to week
     # TODO: clean up the variables and code where available
     
     limit = 1000 # due note that Facebook might say 1,000 is too much and return their max. Point is, we want as much as we can get.
 	  @json = ActiveSupport::JSON.decode(open("http://graph.facebook.com/#{params[:id]}/posts?limit=#{limit}").read)
-	  @page = ActiveSupport::JSON.decode(open("http://graph.facebook.com/#{params[:id]}").read)
     @page['linked_name'] = "<a href='#{@page['link']}' target='_blank' title='#{@page['name']}'>#{@page['name']}</a>"
     
     # TODO: check pagination
