@@ -30,12 +30,11 @@ a {
 #license {
   width: 75%;
   margin: 0 auto;
-  background-color: #666;
+  background-color: #999;
   padding: 5px 40px;
   border: solid 1px #333;
   margin-top: 10px;
   text-align: center;
-  opacity: 0.5;
   font-size: 9px;
 }
 

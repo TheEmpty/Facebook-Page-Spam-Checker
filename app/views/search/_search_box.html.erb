@@ -1,0 +1,4 @@
+<%= form_tag(search_path, :remote => true, :class => 'ajax_loading') do %>
+  <%= text_field_tag :q, params[:q] %><span id='ajax_loader' style='display: none'>&nbsp;<%= image_tag 'ajax-loader.gif', :alt => 'loading' %></span><br />
+  <%= submit_tag 'Search' %>
+<% end -%>

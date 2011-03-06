@@ -1,8 +1,5 @@
 <% title "Search results for #{params[:q]}" -%>
-<%= form_tag(search_path, :remote => true) do %>
-  <%= text_field_tag :q, params[:q] %><br />
-  <%= submit_tag 'Search' %>
-<% end -%>
+<%= render :partial => 'search_box' %>
 <br />
 <div id='search_results'>
   <%= render :partial => 'results' %>

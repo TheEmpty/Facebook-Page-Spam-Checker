@@ -1,15 +1,15 @@
 <% @json.each do |data| -%>
   Name: <strong><%= data['name'] %></strong> is in the <strong><%= data['category'].downcase %></strong> category<br />
-  <%= link_to 'Spam stats for this page', show_path(:id => data['id']), :remote => true %><br />
+  <%= link_to 'Spam stats for this page', show_path(:id => data['id']), :remote => true, :class => 'ajax_loading' %><br />
   <hr />
 <% end -%>
 
 <% if @search[:page] > 1 %>
-  <%= link_to 'Prev.', search_path(:q => params[:q], :page => params[:page] - 1), :remote => true %>
+  <%= link_to 'Prev.', search_path(:q => params[:q], :page => params[:page] - 1), :remote => true, :class => 'ajax_loading' %>
 <% end -%>
 
 Page <%= @search[:page] %>
 
 <% if @search[:more] %>
-  <%= link_to 'Next', search_path(:q => params[:q], :page => @search[:page] + 1), :remote => true %>
+  <%= link_to 'Next', search_path(:q => params[:q], :page => @search[:page] + 1), :remote => true, :class => 'ajax_loading' %>
 <% end -%>
