@@ -31,7 +31,7 @@ class SearchController < ApplicationController
       @days = Time.now - first_post_time
       @days = @days / (24 * 60 * 60)
       logger.debug "Days: #{@days}"
-      @average_posts = @post_count / @days
+      @average_posts = @days / @post_count
     else
       @average_posts = false
     end
@@ -39,14 +39,14 @@ class SearchController < ApplicationController
     
     # average likes
     if @post_count > 0 and @post_likes > 0
-      @average_likes = @post_count / @post_likes
+      @average_likes = @post_likes / @post_count
     else
       @average_likes = false
     end
     
     # average comments
     if @post_comments > 0
-      @average_comments = @post_count / @post_comments
+      @average_comments = @post_comments / @post_count
     end
     @average_interactions = @average_comments + @average_likes
     
@@ -79,6 +79,7 @@ class SearchController < ApplicationController
 	
     respond_to do |format|
       format.html 
+      format.js
       format.xml  { render :xml  => [@json,@search] }
       format.json { render :json => [@json,@search] }
     end

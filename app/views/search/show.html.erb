@@ -3,19 +3,19 @@
 <%= link_to(image_tag(@page['picture']), @page['link']) %><br />
 <strong><%= raw @page['linked_name'] %></strong> is in the <em>"<%= @page['category'].downcase %>"</em> category and has <strong><%= number_with_delimiter @page['likes'] %> likes.</strong><br />
 
-<%= raw @page['linked_name'] %> has posted <strong><%= number_with_delimiter @post_count %></strong> items (avg rounded: <% if @average_posts %><strong><%= number_with_delimiter @average_posts.round %></strong> over <%= number_with_delimiter @days.round %> days.<% else %>N/A<% end %></strong> per day.)<br />
+<%= raw @page['linked_name'] %> has posted <strong><%= number_with_delimiter @post_count %></strong> items (avg rounded: <% if @average_posts %><strong><%= number_with_delimiter @average_posts.round %></strong> per day. Based on the past <%= number_with_delimiter @days.round %> days.<% else %>N/A<% end %></strong>)<br />
 
-<%= raw @page['linked_name'] %>'s posts have been liked <strong><%= number_with_delimiter @post_likes %></strong> times (avg rounded: <% if @average_likes %><strong><%= number_with_delimiter @average_likes.round %></strong><% else %>N/A<% end %></strong> per post.)<br />
+<%= raw @page['linked_name'] %>'s posts have been liked <strong><%= number_with_delimiter @post_likes %></strong> times (avg rounded: <% if @average_likes %><strong><%= number_with_delimiter @average_likes.round %></strong><% else %>N/A<% end %> per post.)<br />
 <%= raw @page['linked_name'] %>'s posts have been commented on <strong><%= number_with_delimiter @post_comments %></strong> times (avg rounded: <% if @average_comments %><strong><%= number_with_delimiter @average_comments.round %></strong><% else %>N/A<% end %></strong> per post.)<br />
 
 
 Our Vatican assassin warlock has rated this page as <strong>
 <% if @average_posts > 1 -%>
-  <strong><span style='color: red;'>VERY</span>
+  <span style='color: red;'>VERY</span>
 <% elsif @average_posts >= 1/7 #(one seventh a day is one a week) -%>
   <span style='color: orange;'>SORT OF</span>
 <% else -%>
-  <span style='color: green'>NOT</span></strong>
+  <span style='color: green'>NOT</span>
 <% end -%>
 </strong> spammy. (based off of the post:day ratio)<br />
 
