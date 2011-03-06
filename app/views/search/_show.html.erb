@@ -1,18 +1,18 @@
 <%= link_to(image_tag(@page['picture']), @page['link']) %><br />
 <strong><%= raw @page['linked_name'] %></strong> is in the <em>"<%= @page['category'].downcase %>"</em> category and has <strong><%= number_with_delimiter @page['likes'] %> likes.</strong><br />
 
-<%= raw @page['linked_name'] %> has posted <strong><%= number_with_delimiter @post_count %></strong> items (avg rounded: <% if @average_posts %><strong><%= number_with_delimiter @average_posts.round %></strong> per day. Based on the past <%= number_with_delimiter @days.round %> days.<% else %>N/A<% end %></strong>)<br />
+<%= raw @page['linked_name'] %> has posted <strong><%= number_with_delimiter @averages[:post_count_total] %></strong> items (avg rounded: <% if @averages[:posts_per_day] %><strong><%= number_with_delimiter @averages[:posts_per_day].round %></strong> per day. Based on the past <%= number_with_delimiter @averages[:based_on_days].round %> days.<% else %>N/A<% end %></strong>)<br />
 
-<%= raw @page['linked_name'] %>'s posts have been liked <strong><%= number_with_delimiter @post_likes %></strong> times (avg rounded: <% if @average_likes %><strong><%= number_with_delimiter @average_likes.round %></strong><% else %>N/A<% end %> per post.)<br />
-<%= raw @page['linked_name'] %>'s posts have been commented on <strong><%= number_with_delimiter @post_comments %></strong> times (avg rounded: <% if @average_comments %><strong><%= number_with_delimiter @average_comments.round %></strong><% else %>N/A<% end %></strong> per post.)<br />
+<%= raw @page['linked_name'] %>'s posts have been liked <strong><%= number_with_delimiter @averages[:post_likes_total] %></strong> times (avg rounded: <% if @averages[:likes_per_post] %><strong><%= number_with_delimiter @averages[:likes_per_post].round %></strong><% else %>N/A<% end %> per post.)<br />
+<%= raw @page['linked_name'] %>'s posts have been commented on <strong><%= number_with_delimiter @averages[:post_comments_total] %></strong> times (avg rounded: <% if @averages[:comments_per_post] %><strong><%= number_with_delimiter @averages[:comments_per_post].round %></strong><% else %>N/A<% end %></strong> per post.)<br />
 
 
 Our Vatican assassin warlock has rated this page as <strong>
-<% if @average_posts == nil -%>
+<% if @averages[:posts_per_day] == nil -%>
   N/A
-<% elsif @average_posts > 1 -%>
+<% elsif @averages[:posts_per_day] > 1 -%>
   <span style='color: red;'>VERY</span>
-<% elsif @average_posts >= 1/7 #(one seventh a day is one a week) -%>
+<% elsif @averages[:posts_per_day] >= 1/7 #(one seventh a day is one a week) -%>
   <span style='color: orange;'>SORT OF</span>
 <% else -%>
   <span style='color: green'>NOT</span>
@@ -20,9 +20,9 @@ Our Vatican assassin warlock has rated this page as <strong>
 </strong> spammy. (based off of the post:day ratio)<br />
 
 This is a <strong>
-<% if @average_interactions == nil -%>
+<% if @averages[:interactions_per_post] == nil -%>
   N/A
-<% elsif @average_interactions >= 525 -%>
+<% elsif @averages[:interactions_per_post] >= 525 -%>
   <span style='color: green'>WINNING</span>
 <% else -%>
   <span style='color: red;'>LOSING</span>

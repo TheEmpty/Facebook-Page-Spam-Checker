@@ -10,66 +10,14 @@ class SearchController < ApplicationController
     if @page['likes'] == nil
       render :text => 'You have entered an invald page ID. Please confirm the page ID and try again.', :layout => true and return
     end
+	@page['linked_name'] = "<a href='#{@page['link']}' target='_blank' title='#{@page['name']}'>#{@page['name']}</a>"
     
     # TODO: save the data in database and load it only once a week - also then provide a link to show progress from week to week
-    # TODO: clean up the variables and code where available
-    
-    limit = 1000 # due note that Facebook might say it is too much and return their max. Point is, we want as much as we can get.
-	  @json = ActiveSupport::JSON.decode(open("http://graph.facebook.com/#{params[:id]}/posts?limit=#{limit}").read)
-    @page['linked_name'] = "<a href='#{@page['link']}' target='_blank' title='#{@page['name']}'>#{@page['name']}</a>"
-    
-    # should have a max of 5 pages, then flash a notice. Facebook will only allow so many chained hits
-	max_pages = 5 - 1 # starts at zero, not one.
-	max_pages.times do |page|
-	  if @json['paging']['next']
-	    sec = ActiveSupport::JSON.decode(open(@json['paging']['next']).read)
-		break if sec['data'].blank?
-		sec['data'].each do |key, value|
-		  @json['data'][key] = value
-		end
-		flash[:notice] = 'This data may be inaccurate as there may be previous posts that were unused.' if page == max_pages
-		@json['paging']['next'] = sec['paging']['next']
-	  else
-	    break
-	  end
+    page = Page.find_or_create_by_page_id(params[:id])
+    @averages = page.get_or_create_averages
+	if @averages[:maxed]
+	  flash[:notice] = 'There may be more data that was unavailable when compiling this data'
 	end
-    
-    @post_count = @json['data'].count
-    post_count  = @post_count.to_f # only convert it once to save proccesing power, used in division to provide more accurate numbers
-    
-    # likes and comments of all posts
-    @post_likes    = 0
-    @post_comments = 0
-    first_post_time  = false
-    @json['data'].each do |post|
-      @post_likes += post['likes']['count'] if post['likes']
-      @post_comments += post['comments']['count'] if post['comments']
-      first_post_time  = post['created_time']
-    end
-    
-    # average posts
-    if first_post_time
-      first_post_time = Time.parse(first_post_time)
-      @days = Time.now - first_post_time
-      @days = @days / (24 * 60 * 60)
-      @average_posts = post_count / @days
-    end
-    
-    # average likes
-    if @post_count > 0 and @post_likes > 0
-      @average_likes = @post_likes / post_count
-    end
-    
-    # average comments
-    if @post_comments > 0
-      @average_comments = @post_comments / post_count
-    end
-    
-    if @average_comments or @average_likes
-      @average_interactions = 0
-      @average_interactions += @average_comments if @average_comments
-      @average_interactions += @average_likes    if @average_likes
-    end
     
     respond_to do |format|
       format.html
