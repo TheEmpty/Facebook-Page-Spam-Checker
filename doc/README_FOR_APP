@@ -1,2 +1,17 @@
-Use this README file to introduce your application and point to useful places in the API for learning more.
-Run "rake doc:app" to generate API documentation for your models, controllers, helpers, and libraries.
+== What Is "Facebook Page Spam Checker"
+Facebook page spam checker, besides being a mouthfull of a name, is a rails 3 application that uses Facebook's graph API to
+grab statistics on a Facebook "page", which are generally used for products. The application aims to see how often they
+produce items that will reach their users' walls and how well their users interact with said posts. Ideal usage is for a
+Facebook owners to check if they are publishing too often and how well their publishings are being interacted with. Additional
+use could be from Facebook users that want to check if a page will spam their feed or if the page is active.
+
+== Where Are the Comments
+I was recently told, "if your code needs to be commented, you're doing it wrong. Code should read". And I must say, I do agree.
+I hope to add comments into this application after it's "done", this is so people can learn off of it. Anything that I do that
+is a bit hacky, I will document it as I write it. I will also write a simplification of any long line. I use shorthand and 
+long lines to keep code self-contained. Why write a block and clutter the page when you can use a single line? When doing
+adjustments, it may be eaiser to break it into a block and then "recompile" it into a longline/shorthand again. But then the
+code does not invade much space when working on other functions in that document.
+
+== The People
+Mohammad El-Abid (Gmail: mohammad dot elabid) - Developer and Project leader
