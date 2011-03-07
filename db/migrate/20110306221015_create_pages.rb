@@ -4,7 +4,7 @@ class CreatePages < ActiveRecord::Migration
       #t.int :page_id
       t.timestamps
     end
-	execute "ALTER TABLE pages ADD page_id LONG"
+	execute "ALTER TABLE pages ADD page_id BIGINT"
   end
 
   def self.down

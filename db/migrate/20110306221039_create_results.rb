@@ -4,7 +4,7 @@ class CreateResults < ActiveRecord::Migration
       t.text :data
       t.timestamps
     end
-	execute "ALTER TABLE results ADD page_id LONG"
+	execute "ALTER TABLE results ADD page_id BIGINT"
   end
 
   def self.down

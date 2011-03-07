@@ -12,10 +12,18 @@
 
 ActiveRecord::Schema.define(:version => 20110306232444) do
 
-# Could not dump table "pages" because of following StandardError
-#   Unknown type 'LONG' for column 'page_id'
+  create_table "pages", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "page_id"
+  end
 
-# Could not dump table "results" because of following StandardError
-#   Unknown type 'LONG' for column 'page_id'
+  create_table "results", :force => true do |t|
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "page_id"
+    t.float    "version"
+  end
 
 end

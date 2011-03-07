@@ -12,7 +12,7 @@ class SearchController < ApplicationController
     end
 	@page['linked_name'] = "<a href='#{@page['link']}' target='_blank' title='#{@page['name']}'>#{@page['name']}</a>"
     
-    # TODO: save the data in database and load it only once a week - also then provide a link to show progress from week to week
+    # TODO: provide a link to show progress from week to week
     page = Page.find_or_create_by_page_id(params[:id])
     @averages = page.get_or_create_averages
 	if @averages[:maxed]
